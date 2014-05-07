@@ -17,9 +17,6 @@
                         usingDeck:(Deck *)deck;
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (Card *)cardAtIndex:(NSUInteger)index;
-//- (int)lastPoints;
-//- (NSMutableArray *)lastAttemptedMatch; // of Card
-
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic) NSInteger cardMatchMode;
 @property (nonatomic, readonly) NSInteger lastPoints;
