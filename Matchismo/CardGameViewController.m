@@ -2,7 +2,7 @@
 //  CardGameViewController.m
 //  Matchismo
 //
-//  Created by Francois Malinowski on 28/03/2014.
+//  Created by Francois Malinowski on 07/05/2014.
 //  Copyright (c) 2014 Francois Malinowski. All rights reserved.
 //
 
@@ -11,6 +11,7 @@
 #import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *resultCardMatchLabel;
 @property (strong, nonatomic) Deck *deck;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (strong, nonatomic) CardMatchingGame *game;
 @property (nonatomic) int threeCardMode;
+
 @end
 
 @implementation CardGameViewController
@@ -56,7 +58,7 @@
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
-
+    
     self.cardModeSwitch.enabled = NO;
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
@@ -111,17 +113,31 @@
         NSLog(@"Chose a card: %@", self.game.lastChosenCard.contents);
     }
     else {
+        NSString *lastAttemptedMatchString = [self generateLastAttemptedMatchString:self.game.lastAttemptedMatch];
+        
         if (self.game.lastPoints > 0) {
-            str = [NSString stringWithFormat:@"Matched %@ for %d points", self.game.lastAttemptedMatch, self.game.lastPoints];
-            NSLog(@"Matched: %@", self.game.lastAttemptedMatch);
+            str = [NSString stringWithFormat:@"Matched %@ for %d points", lastAttemptedMatchString, self.game.lastPoints];
+            NSLog(@"Matched: %@", lastAttemptedMatchString);
         }
         else {
-            str = [NSString stringWithFormat:@"%@ don't match! %d point penalty!", self.game.lastAttemptedMatch, -self.game.lastPoints];
-            NSLog(@"Mismatched: %@", self.game.lastAttemptedMatch);
-        
+            str = [NSString stringWithFormat:@"%@ don't match! %d point penalty!", lastAttemptedMatchString, -self.game.lastPoints];
+            NSLog(@"Mismatched: %@", lastAttemptedMatchString);
+            
         }
         self.resultCardMatchLabel.text = str;
     }
 }
 
+- (NSString *)generateLastAttemptedMatchString:(NSArray *)cards {
+    
+    NSMutableString *cardsString = [[NSMutableString alloc] init];
+    
+    for (Card *card in cards) {
+        [cardsString appendFormat:@"%@ ", [(Card *)card contents]];
+    }
+    
+    return cardsString;
+}
+
 @end
+

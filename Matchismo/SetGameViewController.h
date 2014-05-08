@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Francois Malinowski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CardGameViewController.h"
 
-@interface SetGameViewController : UIViewController
+@interface SetGameViewController : CardGameViewController
 
 @end

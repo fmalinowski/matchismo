@@ -15,16 +15,9 @@
 @property (strong,nonatomic) NSString *shading;
 @property (strong,nonatomic) NSString *color;
 
-//@property (strong,nonatomic) NSString *suit;
-//@property (nonatomic) NSUInteger rank;
-
 + (NSUInteger)maxNumber;
 + (NSArray *)validSymbols;
 + (NSArray *)validShadings;
 + (NSArray *)validColors;
-
-//+ (NSArray *)validSuits;
-//+ (NSUInteger)maxRank;
-
 
 @end

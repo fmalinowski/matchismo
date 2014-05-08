@@ -12,7 +12,7 @@
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray *cards; // of Card
 @property (nonatomic, readwrite) NSInteger lastPoints;
-@property (nonatomic, readwrite) NSString *lastAttemptedMatch; // of Card
+@property (nonatomic, readwrite) NSMutableArray *lastAttemptedMatch; // of Card
 @property (nonatomic, readwrite) NSString *lastAction;
 @property (nonatomic, readwrite) Card* lastChosenCard;
 @end
@@ -128,10 +128,12 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 - (void)saveAttemptedMatch:card otherCards:otherCards {
-    self.lastAttemptedMatch = [card contents];
+    self.lastAttemptedMatch = [[NSMutableArray alloc] init];
     
+    [self.lastAttemptedMatch addObject:card];
     for (Card *otherCard in otherCards) {
-        self.lastAttemptedMatch = [self.lastAttemptedMatch stringByAppendingString:[NSString stringWithFormat:@" %@", [otherCard contents]]];
+        [self.lastAttemptedMatch addObject:otherCard];
     }
 }
+
 @end

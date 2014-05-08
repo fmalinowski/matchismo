@@ -2,7 +2,7 @@
 //  CardGameViewController.h
 //  Matchismo
 //
-//  Created by Francois Malinowski on 28/03/2014.
+//  Created by Francois Malinowski on 07/05/2014.
 //  Copyright (c) 2014 Francois Malinowski. All rights reserved.
 //
 

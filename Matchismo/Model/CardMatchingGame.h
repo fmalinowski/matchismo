@@ -20,7 +20,7 @@
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic) NSInteger cardMatchMode;
 @property (nonatomic, readonly) NSInteger lastPoints;
-@property (nonatomic, readonly) NSString *lastAttemptedMatch; //of Card
+@property (nonatomic, readonly) NSMutableArray *lastAttemptedMatch; //of Card
 @property (nonatomic, readonly) NSString *lastAction; // CHOSEN or MATCH_TRY or NOTHING
 @property (nonatomic, readonly) Card* lastChosenCard;
 

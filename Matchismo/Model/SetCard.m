@@ -31,7 +31,6 @@ static const int LOST_SCORE = 6;
 }
 
 
-
 - (NSString *)contents {
     return nil;
 }
