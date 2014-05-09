@@ -10,9 +10,9 @@
 
 @implementation SetCard
 
-static const int MAX_NUMBER = 3;
-static const int WIN_SCORE = 12;
-static const int LOST_SCORE = 6;
+static const int MAX_NUMBER     = 3;
+static const int WIN_SCORE      = 12;
+static const int LOST_SCORE     = 6;
 
 + (NSUInteger)maxNumber {
     return MAX_NUMBER;
