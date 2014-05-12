@@ -24,6 +24,7 @@
 - (void)updateUI;
 - (void)resetUI;
 
+- (CardMatchingGame *)createNewGame;
 - (IBAction)startNewGameButton:(UIButton *)sender;
 - (IBAction)touchCardButton:(UIButton *)sender;
 - (void)updateResultCardMatchLabel; // Abstract
