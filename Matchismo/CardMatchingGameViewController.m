@@ -8,6 +8,7 @@
 
 #import "CardMatchingGameViewController.h"
 #import "PlayingCardDeck.h"
+#import "PlayingCard.h"
 
 @interface CardMatchingGameViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *matchModeLabel;
@@ -23,7 +24,6 @@
     self.cardMatchMode = 2;
 }
 
-//SURE DONE
 - (IBAction)matchModeSwitch:(UISwitch *)sender {
     if ([sender isOn]) {
         self.matchModeLabel.text = @"3-card match";
@@ -42,14 +42,12 @@
     self.cardModeSwitch.enabled = YES;
 }
 
-//SURE DONE
 - (IBAction)touchCardButton:(UIButton *)sender {
     
     [super touchCardButton:sender];
     self.cardModeSwitch.enabled = NO;
 }
 
-//SURE DONE
 - (Deck *)createDeck {
     return [[PlayingCardDeck alloc] init];
 }
@@ -57,67 +55,95 @@
 - (void)resetUI {
     [super resetUI];
     
+    NSAttributedString *cardTitle = [[NSAttributedString alloc] initWithString:@""];
+    
     for(UIButton *cardButton in self.cardButtons) {
-        [cardButton setTitle:@"" forState:UIControlStateNormal];
+        [cardButton setAttributedTitle:cardTitle forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[UIImage imageNamed:@"cardback"] forState:UIControlStateNormal];
         cardButton.enabled = YES;
     }
 }
 
-//SURE DONE?
 - (void)updateResultCardMatchLabel {
     
     NSString *str;
+    NSMutableAttributedString *string;
     
     if ([self.game.lastAction isEqualToString:@"NOTHING"]) {
         self.resultCardMatchLabel.text = @"";
-        NSLog(@"No action");
+        
     }
-    else if ([self.game.lastAction isEqualToString:@"CHOSEN"]) {
-        self.resultCardMatchLabel.text = [NSString stringWithFormat:@"%@ ", self.game.lastChosenCard.contents];
-        NSLog(@"Chose a card: %@", self.game.lastChosenCard.contents);
+    else if ([self.game.lastAction isEqualToString:@"CHOSEN"])
+    {
+        string = [self titleForCard:self.game.lastChosenCard];
+        self.resultCardMatchLabel.attributedText = string;
     }
     else {
-        NSString *lastAttemptedMatchString = [self generateLastAttemptedMatchString:self.game.lastAttemptedMatch];
+        NSString *pointString;
+        NSMutableAttributedString *lastAttemptedMatchString;
+        
+        lastAttemptedMatchString =
+        [self generateLastAttemptedMatchString:self.game.lastAttemptedMatch];
         
         if (self.game.lastPoints > 0) {
-            str = [NSString stringWithFormat:@"Matched %@ for %d points", lastAttemptedMatchString, self.game.lastPoints];
-            NSLog(@"Matched: %@", lastAttemptedMatchString);
+            pointString = [NSString stringWithFormat:@"for %d points", self.game.lastPoints];
+            
+            string = [[NSMutableAttributedString alloc] initWithString:@"Matched "];
+            [string appendAttributedString:lastAttemptedMatchString];
+            [string appendAttributedString:[[NSAttributedString alloc] initWithString:pointString]];
         }
         else {
-            str = [NSString stringWithFormat:@"%@ don't match! %d point penalty!", lastAttemptedMatchString, -self.game.lastPoints];
-            NSLog(@"Mismatched: %@", lastAttemptedMatchString);
+            pointString = [NSString stringWithFormat:@"don't match! %d point penalty!", self.game.lastPoints];
             
+            string = lastAttemptedMatchString;
+            [string appendAttributedString:[[NSAttributedString alloc] initWithString:pointString]];
         }
-        self.resultCardMatchLabel.text = str;
+        
+        self.resultCardMatchLabel.attributedText = string;
     }
 }
 
-- (NSString *)generateLastAttemptedMatchString:(NSArray *)cards {
+- (NSAttributedString *)generateLastAttemptedMatchString:(NSArray *)cards {
     
-    NSMutableString *cardsString = [[NSMutableString alloc] init];
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@""];
     
     for (Card *card in cards) {
-        [cardsString appendFormat:@"%@ ", [(Card *)card contents]];
+        [string appendAttributedString:
+         [self cardNameWithStyle:card]];
+        [string appendAttributedString:
+         [[NSAttributedString alloc] initWithString:@" "]];
     }
     
-    return cardsString;
+    return string;
 }
 
-- (NSAttributedString *)titleForCard:(Card *) card {
+- (NSAttributedString *)cardNameWithStyle:(Card *) card {
     NSString *content;
     NSAttributedString *string;
-    NSDictionary *attributes;
+    NSMutableDictionary *attributes;
     
-    content = card.isChosen ? card.contents : @"";
-    attributes = @{NSForegroundColorAttributeName:
-                       [self cardContentColor:card]};
+    attributes = [[NSMutableDictionary alloc] init];
+    
+    content = card.contents;
+    [attributes setObject:[self cardContentColor:card]
+                   forKey:NSForegroundColorAttributeName];
     
     string = [[NSAttributedString alloc]
-               initWithString:content
+              initWithString:content
               attributes:attributes];
     
     return string;
+
+}
+
+- (NSAttributedString *)titleForCard:(Card *) card {
+    
+    if (card.isChosen) {
+        return [self cardNameWithStyle:card];
+    }
+    else {
+        return [[NSAttributedString alloc] initWithString:@""];
+    }
 }
 
 - (UIImage *)backgroundImageForCard:(Card *)card {
@@ -125,8 +151,8 @@
 }
 
 - (UIColor *)cardContentColor:(Card *)card {
-    if (([card.contents rangeOfString:@"♠︎"].location != NSNotFound) &&
-        ([card.contents rangeOfString:@"♣︎"].location != NSNotFound)) {
+    if ([((PlayingCard *)card).suit isEqualToString:@"♣︎"] ||
+        [((PlayingCard *)card).suit isEqualToString:@"♠︎"]) {
         return [UIColor blackColor];
     }
     else {

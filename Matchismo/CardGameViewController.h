@@ -31,6 +31,4 @@
 - (NSAttributedString *)titleForCard:(Card *) card; // Abstract
 - (UIImage *)backgroundImageForCard:(Card *)card; // Abstract
 
-//- (CardMatchingGame *)createNewGame; // Abstract
-
 @end
