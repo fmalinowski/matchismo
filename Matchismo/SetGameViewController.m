@@ -40,6 +40,7 @@
     content = [self cardContent:card];
     [attributes setObject:[self cardContentColor:card]
                    forKey:NSForegroundColorAttributeName];
+    [attributes addEntriesFromDictionary:[self cardContentShading:card]];
     
     string = [[NSAttributedString alloc]
               initWithString:content
@@ -85,6 +86,26 @@
     else {
         return [UIColor purpleColor];
     }
+}
+
+- (NSDictionary *)cardContentShading:(Card *)card {
+    NSMutableDictionary *attributes;
+    
+    attributes = [[NSMutableDictionary alloc] init];
+    
+    if ([((SetCard *)card).shading isEqualToString:@"solid"]) {
+        [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName];
+    }
+    else if ([((SetCard *)card).shading isEqualToString:@"open"]) {
+        [attributes setObject:@5 forKey:NSStrokeWidthAttributeName];
+    }
+    else {
+        UIColor *cardColor = [self cardContentColor:card];
+        [attributes addEntriesFromDictionary:@{NSStrokeWidthAttributeName: @-5, NSStrokeColorAttributeName: cardColor, NSForegroundColorAttributeName: [cardColor colorWithAlphaComponent:0.2]}];
+        
+    }
+    
+    return attributes;
 }
 
 - (void)updateResultCardMatchLabel {
@@ -152,6 +173,10 @@
         [cardButton setBackgroundImage:[UIImage imageNamed:@"cardfront"] forState:UIControlStateNormal];
         cardButton.enabled = true;
     }
+}
+
+- (BOOL) setCardButtonState:(Card *)card {
+    return !card.isChosen && !card.isMatched;
 }
 
 @end

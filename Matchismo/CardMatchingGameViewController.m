@@ -52,6 +52,10 @@
     return [[PlayingCardDeck alloc] init];
 }
 
+- (BOOL) setCardButtonState:(Card *)card {
+    return !card.isMatched;
+}
+
 - (void)resetUI {
     [super resetUI];
     

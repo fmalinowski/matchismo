@@ -22,6 +22,7 @@
 
 - (Deck *)createDeck;
 - (void)updateUI;
+- (BOOL) setCardButtonState:(Card *)card; //Abstract
 - (void)resetUI;
 
 - (CardMatchingGame *)createNewGame;

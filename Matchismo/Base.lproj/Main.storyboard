@@ -749,6 +749,7 @@
                     </view>
                     <connections>
                         <outlet property="resultCardMatchLabel" destination="mgG-gi-i5w" id="X8i-bl-lhd"/>
+                        <outlet property="scoreLabel" destination="MmR-4G-TMY" id="trO-Oh-rr6"/>
                         <outletCollection property="cardButtons" destination="SJF-SZ-VRw" id="Fak-K8-Xmw"/>
                         <outletCollection property="cardButtons" destination="RVv-Ul-S81" id="e81-il-axz"/>
                         <outletCollection property="cardButtons" destination="vEr-ly-M7C" id="Iqp-Cv-G4B"/>
